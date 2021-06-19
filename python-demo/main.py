@@ -39,6 +39,7 @@ class MyTreeWidget(QTreeWidget):
         self._drop_dir = os.path.join(os.environ['TMP'], '__qt5drop__')
         if not os.path.isdir(self._drop_dir):
             os.mkdir(self._drop_dir)
+        self._dragging = False
 
     def closeEvent(self, e):
         if os.path.isdir(self._drop_dir):
@@ -53,10 +54,17 @@ class MyTreeWidget(QTreeWidget):
         return ['text/uri-list']
 
     def startDrag(self, dropActions):
-        ''' force copy mode '''
-        super().startDrag(Qt.CopyAction)
+        self._dragging = True
+        super().startDrag(Qt.CopyAction)  # blocking while user drags
+        self._dragging = False
 
-    def copyToExplorer(self, target_dir):
+    def handleDrop(self, msg):
+        # only handle WM_COPYDATA message if this widget was the drag source
+        if not self._dragging:
+            return
+        ds = cast(msg.lParam, POINTER(COPYDATASTRUCT))
+        data = cast(ds.contents.lpData, LPCSTR)
+        target_dir = os.path.dirname(data.value.decode())
         for tree_item in self.selectedItems():
             src = tree_item.data(0, Qt.UserRole)
             if tree_item.type() == TYPE_FOLDER:
@@ -119,10 +127,8 @@ class Main(QMainWindow):
         if event_type == 'windows_generic_MSG':
             msg = MSG.from_address(message.__int__())
             if msg.message == WM_COPYDATA:
-                ds = cast(msg.lParam, POINTER(COPYDATASTRUCT))
-                data = cast(ds.contents.lpData, LPCSTR)
-                target_dir = os.path.dirname(data.value.decode())
-                self._tree_widget.copyToExplorer(target_dir)
+                # forward WM_COPYDATA message to tree widget
+                self._tree_widget.handleDrop(msg)
         return False, 0
 
 
