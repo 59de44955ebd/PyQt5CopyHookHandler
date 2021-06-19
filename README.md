@@ -6,7 +6,7 @@ A generic copy hook shell extension that can be used to implement dragging items
 
 This is a simple [Copy Hook Handler](https://docs.microsoft.com/en-us/windows/win32/shell/how-to-create-copy-hook-handlers) Shell Extension that watches Explorer for copy actions that involve a (dummy) folder called "\_\_qt5drop\_\_". If it detects such a copy action, it sends the target path of the copy action as WM_COPYDATA message to all top-level windows of a specific window class (by default "Qt5152QWindowIcon" for applications based on Qt 5.15.2).
 
-This can be used to drag & drop arbitrary items from PyQt/PySide (or also other) applications to Explorer, and then actually save files or folders in the corresponding target folder. Possible use cases might be FTP/WebDAV GUI applications, disk image explorers etc.
+This can be used to drag & drop arbitrary items from PyQt/PySide (or also other) applications to Explorer, and then actually save files or folders in the corresponding target folder. Possible use cases might be FTP/WebDAV GUI clients, disk image explorers etc.
 
 The window class used as target of the WM_COPYDATA messages is loaded from a string resource, and therefor can be changed by editing and compiling the resources of [PyQt5CopyHookHandler.dll](release/x64/PyQt5CopyHookHandler.dll), using e.g. [Resource Hacker](http://www.angusj.com/resourcehacker/), without recompiling the C++ code.
 
