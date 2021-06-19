@@ -104,13 +104,13 @@ class Main(QMainWindow):
         folder_item.setIcon(0, icon_folder)
         folder_item.setData(0, Qt.UserRole, image_dir)
         self._tree_widget.addTopLevelItem(folder_item)
+        folder_item.setExpanded(True)
 
         for f in os.listdir(image_dir):
             file_item = QTreeWidgetItem([f], TYPE_FILE)
             file_item.setIcon(0, QIcon(os.path.join(image_dir, f)))
             file_item.setData(0, Qt.UserRole, os.path.join(image_dir, f))
             folder_item.addChild(file_item)
-            folder_item.setExpanded(True)
 
         self.resize(240, 520)
         self.show()
