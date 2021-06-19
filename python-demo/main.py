@@ -142,7 +142,7 @@ if __name__ == '__main__':
         if QMessageBox.question(
                 None,
                 'Shell extension not registered',
-                "Shell extension 'PyQt5CopyHookHandler.dll' is not registered in the system. Register it now?"
+                'Shell extension "PyQt5CopyHookHandler.dll" is not registered in the system. Register it now?'
                 ) != QMessageBox.Yes:
             sys.exit(0)
         ret = windll.shell32.ShellExecuteW(
