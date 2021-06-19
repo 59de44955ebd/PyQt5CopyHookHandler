@@ -158,7 +158,7 @@ if __name__ == '__main__':
                 os.path.join(APP_DIR, r'resources\shellext\PyQt5CopyHookHandler.dll'),
                 None,
                 1)
-        # restart explorer
+        # restart explorer?
         if QMessageBox.question(
                 None,
                 'Restart Explorer?',
